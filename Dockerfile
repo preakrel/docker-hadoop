@@ -11,8 +11,8 @@ ENV HADOOP_PREFIX /opt/hadoop
 RUN apt-get update && apt-get install -y wget ssh rsync openjdk-8-jdk
 
 # Download hadoop.
-RUN wget -O /tmp/hadoop-${HADOOP_VERSION}.tar.gz http://mirrors.whoishostingthis.com/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
-    && wget -O /tmp/hadoop-${HADOOP_VERSION}.tar.gz.mds  http://mirrors.whoishostingthis.com/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.mds
+RUN wget -O /tmp/hadoop-${HADOOP_VERSION}.tar.gz http://mirrors.whoishostingthis.com/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz 
+# && wget -O /tmp/hadoop-${HADOOP_VERSION}.tar.gz.mds  http://mirrors.whoishostingthis.com/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz.mds
 
 # Install hadoop
 RUN tar -C /opt -xf /tmp/hadoop-${HADOOP_VERSION}.tar.gz \
