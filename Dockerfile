@@ -8,7 +8,7 @@ ENV HADOOP_VERSION 2.8.5
 ENV HADOOP_PREFIX /opt/hadoop
 
 # Install all dependencies
-RUN apt-get -y update --fix-missing && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk  tar  telnetd  htop curl
+RUN apt-get -y update --fix-missing && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim
 
 # Download hadoop.
 RUN wget -O /tmp/hadoop-${HADOOP_VERSION}.tar.gz http://mirrors.whoishostingthis.com/apache/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz 
