@@ -42,7 +42,7 @@ RUN apt-get -y update --fix-missing \
     && mv /opt/config/entrypoint.sh / \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf  /var/tmp/* /tmp/* \
-    && chmod 777 -R /opt && chmod 777 /entrypoint.sh
+    && chmod 777 -R /opt && chmod 777 /entrypoint.sh \
     && mkdir /root/shared && chmod a+rwX /root/shared
 
 EXPOSE 2181 9000 21 50070 50470 50075 50475 50010 50020 50090 50090 50100 50105 8485 8480 8481 50060 50030 19888 10033 10020 8032 8030 8088 8090 8031 8033 8040 8042 10200 8188 8190 8047 8788 8046 8045 22
