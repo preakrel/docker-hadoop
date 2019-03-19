@@ -22,11 +22,11 @@ RUN apt-get -y update --fix-missing \
     && rm -rf /opt/hadoop/share/doc \
     \
     # Install ssh key
-    # &&  ssh-keygen -q -t dsa -P '' -f /root/.ssh/id_dsa \
-    # && cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys \
+    &&  ssh-keygen -q -t dsa -P '' -f /root/.ssh/id_dsa \
+    && cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys \
     \
     # Copy Hadoop config files
-    && mv /opt/config/ssh_config  /root/.ssh/ \
+    && mv /opt/config/ssh_config  /root/.ssh/config \
     && mv /opt/config/hadoop-env.sh /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/core-site.xml /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/hdfs-site.xml /opt/hadoop/etc/hadoop/ \
