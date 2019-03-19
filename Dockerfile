@@ -26,7 +26,7 @@ RUN apt-get -y update --fix-missing \
     # && cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys \
     \
     # Copy Hadoop config files
-    && mv /opt/config/config /root/.ssh/config \
+    && mv /opt/config/ssh_config  /root/.ssh/config \
     && mv /opt/config/hadoop-env.sh /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/core-site.xml /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/hdfs-site.xml /opt/hadoop/etc/hadoop/ \
