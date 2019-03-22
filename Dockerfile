@@ -13,6 +13,9 @@ COPY config/* /opt/config/
 RUN apt-get -y update --fix-missing \
     && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim \
     \
+    && apt-get clean  \
+    && apt-get autoclean \
+    && apt-get autoremove \
     && cd /opt \
     # Download hadoop.
     && wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
@@ -20,13 +23,17 @@ RUN apt-get -y update --fix-missing \
     && mv hadoop-${HADOOP_VERSION} hadoop \
     && rm -rf hadoop-${HADOOP_VERSION}.tar.gz \
     && rm -rf /opt/hadoop/share/doc \
+    && mkdir /root/.ssh \
+    && chmod 777 /root/.ssh \
     \
     # Install ssh key
-    &&  ssh-keygen -q -t dsa -P '' -f /root/.ssh/id_dsa \
-    && cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys \
+    # &&  ssh-keygen -q -t dsa -P '' -f /root/.ssh/id_dsa \
+    # && cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys \
+    && ssh-keygen -t rsa -f ~/.ssh/id_rsa -P '' \
+    && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
     \
     # Copy Hadoop config files
-    && mv /opt/config/ssh_config  /root/.ssh/config \
+    && mv /opt/config/config  /root/.ssh/config \
     && mv /opt/config/hadoop-env.sh /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/core-site.xml /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/hdfs-site.xml /opt/hadoop/etc/hadoop/ \
@@ -35,14 +42,17 @@ RUN apt-get -y update --fix-missing \
     && mkdir -pv /var/lib/hadoop  \
     && chmod 777 -R /var/lib/hadoop \
     \
+    && sed -i "s|`cat /etc/ssh/ssh_config | grep StrictHostKeyChecking`|StrictHostKeyChecking no|g" /etc/ssh/ssh_config  \
+    && chmod 600 ~/.ssh/authorized_keys \
     # Format hdfs
-    && /opt/hadoop/bin/hdfs namenode -format \
+    # && /opt/hadoop/bin/hdfs namenode -format \
     \
     # Copy the entry point shell
     && mv /opt/config/entrypoint.sh / \
+    && mv /opt/config/run.sh / \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf  /var/tmp/* /tmp/* \
-    && chmod 777 -R /opt && chmod 777 /entrypoint.sh \
+    && chmod 777 -R /opt && chmod 777 /entrypoint.sh && chmod 777 /run.sh \
     && mkdir /root/shared && chmod a+rwX /root/shared
 
 EXPOSE 2181 9000 21 50070 50470 50075 50475 50010 50020 50090 50090 50100 50105 8485 8480 8481 50060 50030 19888 10033 10020 8032 8030 8088 8090 8031 8033 8040 8042 10200 8188 8190 8047 8788 8046 8045 22

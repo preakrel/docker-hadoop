@@ -1,0 +1,16 @@
+Host *
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  AddressFamily inet
+Host 0.0.0.0
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  AddressFamily inet
+Host localhost
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  AddressFamily inet
+Host hadoop
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  AddressFamily inet
