@@ -15,9 +15,6 @@ COPY config/* /opt/config/
 # Install all dependencies
 RUN apt-get -y update --fix-missing \
     && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
-    && apt-get clean  \
-    && apt-get autoclean \
-    && apt-get autoremove \
     && rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa \
     && cd /opt \
     # Download hadoop.
@@ -32,6 +29,9 @@ RUN apt-get -y update --fix-missing \
     && mv /opt/config/hdfs-site.xml /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/mapred-site.xml /opt/hadoop/etc/hadoop/ \
     && mv /opt/config/yarn-site.xml /opt/hadoop/etc/hadoop/ \
+    # Format hdfs
+    && /opt/hadoop/bin/hdfs namenode -format \
+    \
     && mkdir -pv /root/.ssh && mv /opt/config/ssh_config /root/.ssh/config && chmod 600 /root/.ssh/config && chown root:root /root/.ssh/config \
     && mkdir -pv /var/lib/hadoop  \
     && chmod 777 -R /var/lib/hadoop \
@@ -44,6 +44,8 @@ RUN apt-get -y update --fix-missing \
     && sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config \
     && echo "UsePAM no" >> /etc/ssh/sshd_config \
     && echo "Port 2122" >> /etc/ssh/sshd_config
+
+    
 # Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090 8020 9000
 # Mapred ports
