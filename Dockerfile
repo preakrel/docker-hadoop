@@ -3,7 +3,7 @@ MAINTAINER PHP
 USER root
 WORKDIR /root
 #环境变量
-ENV HADOOP_VERSION=2.8.4
+ENV HADOOP_VERSION=2.8.5
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV HADOOP_HOME=/opt/hadoop
@@ -14,8 +14,7 @@ ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 COPY config/* /opt/config/
 
 # Install all dependencies
-RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-    && apt-get -y update --fix-missing \
+RUN apt-get -y update --fix-missing \
     && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
     && apt-get clean  \
     && apt-get autoclean \
