@@ -12,10 +12,11 @@ ENV WEB=http://mirrors.hust.edu.cn/apache
 ENV CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 COPY config/* /opt/config/
+
 # Install all dependencies
 RUN apt-get -y update --fix-missing \
-    && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
-    && rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa \
+    && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim \
+    \
     && cd /opt \
     # Download hadoop.
     && wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
@@ -45,7 +46,7 @@ RUN apt-get -y update --fix-missing \
     && echo "UsePAM no" >> /etc/ssh/sshd_config \
     && echo "Port 2122" >> /etc/ssh/sshd_config
 
-    
+
 # Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090 8020 9000
 # Mapred ports
