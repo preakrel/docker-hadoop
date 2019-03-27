@@ -3,7 +3,7 @@ MAINTAINER PHP
 USER root
 WORKDIR /root
 #环境变量
-ENV HADOOP_VERSION=2.8.5
+ENV HADOOP_VERSION=2.8.4
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV HADOOP_HOME=/opt/hadoop
@@ -14,15 +14,16 @@ ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 COPY config/* /opt/config/
 
 # Install all dependencies
-RUN apt-get -y update --fix-missing \
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
+    && apt-get -y update --fix-missing \
     && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
     && apt-get clean  \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa \
-    && cd /opt \
+    && cd /opt 
     # Download hadoop.
-    && wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
+RUN wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
     && tar -zxf hadoop-${HADOOP_VERSION}.tar.gz \
     && mv hadoop-${HADOOP_VERSION} hadoop \
     && rm -rf hadoop-${HADOOP_VERSION}.tar.gz \
@@ -48,7 +49,6 @@ RUN apt-get -y update --fix-missing \
     && sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config \
     && echo "UsePAM no" >> /etc/ssh/sshd_config \
     && echo "Port 2122" >> /etc/ssh/sshd_config
-
 
 # Hdfs ports
 EXPOSE 50010 50020 50070 50075 50090 8020 9000
