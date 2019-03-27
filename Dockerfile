@@ -21,9 +21,8 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa \
-    && cd /opt 
     # Download hadoop.
-RUN wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
+RUN cd /opt && wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
     && tar -zxf hadoop-${HADOOP_VERSION}.tar.gz \
     && mv hadoop-${HADOOP_VERSION} hadoop \
     && rm -rf hadoop-${HADOOP_VERSION}.tar.gz \
