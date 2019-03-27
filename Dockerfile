@@ -1,4 +1,4 @@
-FROM daocloud.io/php_ity/docker-ubuntu
+FROM ubuntu:16.04
 MAINTAINER PHP
 
 USER root
@@ -17,7 +17,7 @@ ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 COPY config/* /opt/config/
 
 # Install all dependencies
-RUN apt-get -y update \
+RUN apt-get -y update --fix-missing \
     && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
     && apt-get clean  \
     && apt-get autoclean \
