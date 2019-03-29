@@ -1,5 +1,4 @@
 FROM ubuntu:16.04
-
 MAINTAINER PHP
 
 USER root
@@ -20,7 +19,7 @@ COPY config/* /opt/config/
 # Install all dependencies
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
     && apt-get -y update --fix-missing \
-    && apt-get install --no-install-recommends -y -q apt-utils openssh-server openssh-client  iputils-ping wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
+    && apt-get install --no-install-recommends -y -q openssh-server openssh-client  iputils-ping wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
     && apt-get clean  \
     && apt-get autoclean \
     && apt-get autoremove \
@@ -52,13 +51,6 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
     && echo "UsePAM no" >> /etc/ssh/sshd_config \
     && echo "Port 2122" >> /etc/ssh/sshd_config
 
-# Hdfs ports
-EXPOSE 50010 50020 50070 50075 50090 8020 9000
-# Mapred ports
-EXPOSE 10020 19888
-#Yarn ports
-EXPOSE 8030 8031 8032 8033 8040 8042 8088
-#Other ports
-EXPOSE 49707 2122 22
+EXPOSE 8020 8042 8088 9000 10020 19888 50010 50020 50070 50075 50090 8030 8031 8032 8033 8040 49707 2122 22
 ################## Entry point
 CMD ["/entrypoint.sh"]
