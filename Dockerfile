@@ -5,23 +5,21 @@ USER root
 WORKDIR /root
 
 #环境变量
-ENV HADOOP_VERSION=2.8.4
+ENV HADOOP_VERSION=2.8.3
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV HADOOP_HOME=/opt/hadoop
 ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
-ENV WEB=http://mirrors.hust.edu.cn/apache
+ENV WEB=http://archive.apache.org/dist
 ENV CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 
 COPY config/* /opt/config/
 
 # Install all dependencies
-RUN echo nameserver 8.8.8.8 >> /etc/resolv.conf \
-    # && sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-    \
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
     && apt-get -y update --fix-missing \
-    && apt-get install --no-install-recommends -y wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
+    && apt-get install --no-install-recommends -y -q openssh-server openssh-client  iputils-ping wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
     && apt-get clean  \
     && apt-get autoclean \
     && apt-get autoremove \
@@ -53,6 +51,14 @@ RUN echo nameserver 8.8.8.8 >> /etc/resolv.conf \
     && echo "UsePAM no" >> /etc/ssh/sshd_config \
     && echo "Port 2122" >> /etc/ssh/sshd_config
 
-EXPOSE 8020 8042 8088 9000 10020 19888 50010 50020 50070 50075 50090 8030 8031 8032 8033 8040 49707 2122 22
+# Hdfs ports
+EXPOSE 50010 50020 50070 50075 50090 8020 9000
+# Mapred ports
+EXPOSE 10020 19888
+#Yarn ports
+EXPOSE 8030 8031 8032 8033 8040 8042 8088
+#Other ports
+EXPOSE 49707 2122 22
+
 ################## Entry point
 CMD ["/entrypoint.sh"]
