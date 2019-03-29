@@ -22,7 +22,7 @@
 # remote nodes.
 
 # The java implementation to use.
-export JAVA_HOME=/opt/java_jdk
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 export HADOOP_PREFIX=/opt/hadoop
 export HADOOP_HOME=/opt/hadoop

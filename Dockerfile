@@ -6,8 +6,8 @@ WORKDIR /root
 
 #环境变量
 ENV HADOOP_VERSION=2.8.3
-ENV JAVA_HOME=/opt/java_jdk
-ENV JRE_HOME=$JAVA_HOME/jre
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
 ENV HADOOP_HOME=/opt/hadoop
 ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 ENV WEB=http://archive.apache.org/dist
@@ -19,15 +19,12 @@ COPY config/* /opt/config/
 # Install all dependencies
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
     && apt-get -y update --fix-missing \
-    && apt-get install --no-install-recommends -y -q apt-utils iputils-ping wget ssh rsync ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
+    && apt-get install --no-install-recommends -y -q apt-utils iputils-ping wget ssh rsync openjdk-8-jdk openjdk-8-jre ant gnupg maven xmlstarlet net-tools telnetd curl python htop python3 openssh-server openssh-client vim sudo \
     && apt-get clean  \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -f /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_rsa_key /root/.ssh/id_rsa \
     && cd /opt \
-    && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" -P /opt "https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-linux-x64.tar.gz" \
-    && mv jdk-8u201-linux-x64.tar.gz jdk-8u201-linux-x64.tar && tar -zxvf jdk-8u201-linux-x64.tar && mv jdk1.8.0_201 java_jdk && rm -rf jdk-8u201-linux-x64.tar \
-    \
     # Download hadoop.
     && wget -q -O hadoop-${HADOOP_VERSION}.tar.gz $WEB/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
     && tar -zxf hadoop-${HADOOP_VERSION}.tar.gz \
